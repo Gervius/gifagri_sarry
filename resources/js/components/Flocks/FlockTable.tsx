@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link, router } from '@inertiajs/react';
-import { flocksEdit, flocksDestroy, flocksSubmit, flocksShow } from '@/routes';
 import { Calendar, MapPin, Send, AlertCircle, ClipboardList, Edit2, Trash2 } from 'lucide-react';
+import React from 'react';
+import { flocksEdit, flocksDestroy, flocksSubmit, flocksShow } from '@/routes';
 
 interface Flock {
   id: number;

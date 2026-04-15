@@ -1,10 +1,10 @@
 import { useForm } from '@inertiajs/react';
+import { Upload, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, X } from 'lucide-react';
 
 interface CompanySettingsProps {
     company?: {
@@ -29,6 +29,7 @@ export default function CompanySettings({ company }: CompanySettingsProps) {
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             setData('logo', file);
             const url = URL.createObjectURL(file);

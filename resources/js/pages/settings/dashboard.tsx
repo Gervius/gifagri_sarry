@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CompanySettings from './components/CompanySettings';
-import ZootechnieSante from './components/ZootechnieSante';
 import FinanceAnalytique from './components/FinanceAnalytique';
 import SecurityPermissions from './components/SecurityPermissions';
+import ZootechnieSante from './components/ZootechnieSante';
 
 export default function SettingsDashboard() {
     const [activeTab, setActiveTab] = useState('company');

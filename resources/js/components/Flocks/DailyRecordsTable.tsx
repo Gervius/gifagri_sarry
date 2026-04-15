@@ -1,5 +1,5 @@
-import React from 'react';
 import { Calendar, AlertCircle } from 'lucide-react';
+import React from 'react';
 
 interface DailyRecord {
   id: number;

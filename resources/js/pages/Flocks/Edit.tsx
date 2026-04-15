@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
 import { AlertCircle, ChevronLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
 import { flocksEdit, flocksUpdate } from '@/routes';
 
 interface Building {

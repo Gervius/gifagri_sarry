@@ -19,6 +19,7 @@ const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 export function useToasts(): ToastContextValue {
     console.log('✅ ToastProvider mounted');
     const ctx = useContext(ToastContext);
+
     if (!ctx) {
         // Fallback: avoid throwing in environments where provider wasn't mounted.
         // Provide no-op implementations to prevent runtime errors and log a warning.
@@ -26,6 +27,7 @@ export function useToasts(): ToastContextValue {
             addToast: (t) => {
 
                 console.warn('[ToastProvider] addToast called without provider. Message:', t?.message);
+
                 return 'noop';
             },
             removeToast: (id: string) => {
@@ -34,6 +36,7 @@ export function useToasts(): ToastContextValue {
             },
         } as ToastContextValue;
     }
+
     return ctx;
 }
 
@@ -50,6 +53,7 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
         const id = `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
         const t: Toast = { id, ...toast };
         setToasts((s) => [t, ...s]);
+
         return id;
     }, []);
 
@@ -57,8 +61,15 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
     useEffect(() => {
         toasts.forEach(t => {
             const dur = t.duration ?? 4000;
-            if (dur <= 0) return;
-            if (scheduledRef.current.has(t.id)) return;
+
+            if (dur <= 0) {
+return;
+}
+
+            if (scheduledRef.current.has(t.id)) {
+return;
+}
+
             scheduledRef.current.add(t.id);
             const timer = setTimeout(() => {
                 removeToast(t.id);

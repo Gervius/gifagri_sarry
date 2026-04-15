@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlockStatus } from '@/types';
+import type { FlockStatus } from '@/types';
 
 interface Props {
   status: FlockStatus;
@@ -14,6 +14,7 @@ const statusConfig: Record<FlockStatus, { color: string; label: string }> = {
 
 export default function FlockStatusBadge({ status }: Props) {
   const config = statusConfig[status];
+
   return (
     <span className={`px-3 py-1 rounded-full text-sm ${config.color}`}>
       {config.label}
