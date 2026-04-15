@@ -1,12 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
 import { Head, router, usePage } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-
 import {
   Plus, Search, ChevronLeft, ChevronRight, MoreHorizontal,
   Eye, ClipboardList, CheckCircle, XCircle, Send, Archive, Edit2, Trash2,
   MapPin, Calendar, Filter
 } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import AppLayout from '@/layouts/app-layout';
+
 import { flocksStore, flocksSubmit, flocksReject, flocksDestroy, flocksEnd, generation, flocksShow, flocksEdit } from '@/routes';
 
 
@@ -100,7 +100,10 @@ export default function Index({ flocks, buildings, filters }: PageProps) {
   };
 
   const handleDelete = (flock: Flock) => {
-    if (!confirm(`Supprimer définitivement le lot "${flock.name}" ?`)) return;
+    if (!confirm(`Supprimer définitivement le lot "${flock.name}" ?`)) {
+return;
+}
+
     router.delete(flocksDestroy.url(flock.id), {
       
     });
@@ -118,13 +121,20 @@ export default function Index({ flocks, buildings, filters }: PageProps) {
 
   const handleReject = (flock: Flock) => {
     const reason = prompt('Motif du rejet :');
-    if (reason === null) return;
+
+    if (reason === null) {
+return;
+}
+
     router.patch(flocksReject.url(flock.id), {
     });
   };
 
   const handleEnd = (flock: Flock) => {
-    if (!confirm(`Terminer le lot "${flock.name}" ? Cette action est irréversible.`)) return;
+    if (!confirm(`Terminer le lot "${flock.name}" ? Cette action est irréversible.`)) {
+return;
+}
+
     router.post(flocksEnd.url(flock.id), {}, {
     });
   };
@@ -269,6 +279,7 @@ export default function Index({ flocks, buildings, filters }: PageProps) {
                   {(() => {
                     const prevLink = flocks.links.find(link => link.label.includes('Précédent') || link.label === '&laquo; Previous');
                     const nextLink = flocks.links.find(link => link.label.includes('Suivant') || link.label === 'Next &raquo;');
+
                     return (
                       <>
                         <button

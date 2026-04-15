@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
 import { usePage, router } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { useToasts } from '@/components/ToastProvider';
 import {
   Eye, Edit2, Send, AlertCircle, ClipboardList, CheckCircle, XCircle,
   MapPin, Calendar, Plus, ChevronLeft, ChevronRight, Trash2, MessageCircle
 } from 'lucide-react';
-import { flocksApprove, flocksDestroy, flocksReject, flocksSubmit } from '@/routes';
+import React, { useState, useEffect } from 'react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, ComposedChart
 } from 'recharts';
 import FlockProfitability from '@/components/Flocks/FlockProfitability';
+import { useToasts } from '@/components/ToastProvider';
+import AppLayout from '@/layouts/app-layout';
+import { flocksApprove, flocksDestroy, flocksReject, flocksSubmit } from '@/routes';
 
 // ─────────────────────────────────────────────
 // Types
@@ -113,15 +113,23 @@ const [rejectionReason, setRejectionReason] = useState('');
   const { addToast } = useToasts();
 
   useEffect(() => {
-    if (flash?.success) addToast({ message: String(flash.success), type: 'success' });
-    if (flash?.error) addToast({ message: String(flash.error), type: 'error' });
+    if (flash?.success) {
+addToast({ message: String(flash.success), type: 'success' });
+}
+
+    if (flash?.error) {
+addToast({ message: String(flash.error), type: 'error' });
+}
 
   }, []);
 
 // ── Handlers ────────────────────────────────
 
 const handleDelete = () => {
-  if (!confirm(`Supprimer le lot "${flock.name}" ?`)) return;
+  if (!confirm(`Supprimer le lot "${flock.name}" ?`)) {
+return;
+}
+
   //TODO remplacer  router.delete(`/flocks/${flock.id}`);
   router.delete(flocksDestroy.url(flock.id));
 };
@@ -135,7 +143,10 @@ const handleApprove = () => {
 };
 
 const handleReject = () => {
-  if (!rejectionReason.trim()) return;
+  if (!rejectionReason.trim()) {
+return;
+}
+
   router.patch(flocksReject.url(flock.id), { reason: rejectionReason }, {
     onSuccess: () => {
       setShowApproveModal(false);
@@ -423,6 +434,7 @@ return (
                     <tbody className="divide-y divide-stone-100">
                       {dailyRecords.data.map(record => {
                         const rsm = RECORD_STATUS_META[record.status];
+
                         return (
                           <tr key={record.id} className="hover:bg-stone-50">
                             <td className="px-6 py-4 text-stone-700">

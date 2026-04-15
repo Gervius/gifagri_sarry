@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { XCircle, CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface Flock {
   id: number;
@@ -21,7 +21,9 @@ interface Props {
 export default function DailyRecordApprovalModal({ flock, onClose, onApprove, onReject }: Props) {
   const [rejectionReason, setRejectionReason] = useState('');
 
-  if (!flock) return null;
+  if (!flock) {
+return null;
+}
 
   const handleReject = () => {
     if (rejectionReason.trim()) {

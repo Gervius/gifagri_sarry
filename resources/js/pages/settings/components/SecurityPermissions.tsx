@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface Role {
     id: number;
@@ -52,7 +52,9 @@ export default function SecurityPermissions({ roles = [], allPermissions = [] }:
         if (!acc[perm.domain]) {
             acc[perm.domain] = [];
         }
+
         acc[perm.domain].push(perm);
+
         return acc;
     }, {} as Record<string, Permission[]>);
 

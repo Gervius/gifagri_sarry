@@ -1,7 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { ToastProvider } from '@/hooks/use-toast';
 import { initializeTheme } from '@/hooks/use-appearance';
+import { ToastProvider } from '@/hooks/use-toast';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';

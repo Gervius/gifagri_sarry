@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
 import { router, useForm, usePage } from '@inertiajs/react';
-import { useToasts } from '@/components/ToastProvider';
 import {
     Plus, CheckCircle, XCircle,
     ChevronLeft, ChevronRight
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useToasts } from '@/components/ToastProvider';
 import {  } from '@/routes';
 
 
@@ -99,7 +99,10 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
 
     // Chargement initial
     const loadRecords = (page = 1) => {
-        if (!flock) return;
+        if (!flock) {
+return;
+}
+
         setLoading(true);
         setError(null);
         router.reload({
@@ -109,6 +112,7 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
             preserveScroll: true,
             onSuccess: (pageObj) => {
                 const data = (pageObj.props as PageProps).dailyRecords;
+
                 if (data) {
                     setRecords(data.data);
                     setPagination({
@@ -117,6 +121,7 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
                         total: data.total,
                     });
                 }
+
                 setLoading(false);
             },
             onError: (errors) => {
@@ -128,7 +133,9 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
     };
 
     useEffect(() => {
-        if (flock) loadRecords();
+        if (flock) {
+loadRecords();
+}
     }, [flock]);
 
     // ── Actions avec récupération directe depuis la réponse ──
@@ -140,10 +147,12 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
             only: ['flash'], // On demande uniquement les nouvelles données flash
             onSuccess: (page) => {
                 const newRecord = (page.props as PageProps).flash?.newRecord;
+
                 if (newRecord) {
                     setRecords(prev => [newRecord, ...prev]);
                     setPagination(prev => ({ ...prev, total: prev.total + 1 }));
                 }
+
                 setShowDailyForm(false);
                 setData({ flock_id: flock?.id ?? null, date: new Date().toISOString().split('T')[0], losses: '', eggs: '', feed_type_id: '', feed_consumed: '', water_consumed: '', notes: '' });
                 addToast({ message: 'Suivi créé avec succès', type: 'success' });
@@ -161,9 +170,11 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
             only: ['flash'],
             onSuccess: (page) => {
                 const updatedFlock = page.props.flash?.updatedFlock;
+
                 if (updatedFlock) {
                     onFlockUpdate(updatedFlock);
                 }
+
                 addToast({ message: 'Suivi approuvé', type: 'success' });
                 // Recharger la page courante des enregistrements
                 loadRecords(pagination.current_page);
@@ -176,17 +187,22 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
     };
 
     const handleReject = (recordId: number) => {
-        if (!rejectionReason.trim()) return;
+        if (!rejectionReason.trim()) {
+return;
+}
+
         router.post(suivieReject.url(recordId), { reason: rejectionReason }, {
             preserveState: true,
             only: ['flash'],
             onSuccess: (page) => {
                 const updated = (page.props as PageProps).flash?.updatedRecord;
+
                 if (updated) {
                     setRecords(prev =>
                         prev.map(r => (r.id === updated.id ? { ...r, ...updated } : r))
                     );
                 }
+
                 setRejectingId(null);
                 setRejectionReason('');
                 addToast({ message: 'Suivi rejeté', type: 'success' });
@@ -256,6 +272,7 @@ export default function DailyRecords({ initialFlock, onClose, onFlockUpdate, rec
                         )}
                         {records.map(record => {
                             const rsm = RECORD_STATUS_META[record.status];
+
                             return (
                                 <tr key={record.id} className="hover:bg-stone-50">
                                     <td className="px-4 py-3 text-stone-700">
