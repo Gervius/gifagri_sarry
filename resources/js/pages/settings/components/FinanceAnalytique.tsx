@@ -18,9 +18,12 @@ interface FinanceAnalytiqueProps {
     accounts?: AnalyticalAccount[];
 }
 
-export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiqueProps) {
+export default function FinanceAnalytique({
+    accounts = [],
+}: FinanceAnalytiqueProps) {
     const [expandedNodes, setExpandedNodes] = useState<Set<number>>(new Set());
-    const [editingAccount, setEditingAccount] = useState<AnalyticalAccount | null>(null);
+    const [editingAccount, setEditingAccount] =
+        useState<AnalyticalAccount | null>(null);
 
     const toggleExpanded = (id: number) => {
         const newExpanded = new Set(expandedNodes);
@@ -64,8 +67,10 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
         return (
             <div key={account.id}>
                 <div
-                    className={`flex items-center py-2 px-4 hover:bg-gray-50 border-l-2 ${
-                        level > 0 ? 'border-l-gray-200 ml-4' : 'border-l-transparent'
+                    className={`flex items-center border-l-2 px-4 py-2 hover:bg-gray-50 ${
+                        level > 0
+                            ? 'ml-4 border-l-gray-200'
+                            : 'border-l-transparent'
                     }`}
                     style={{ paddingLeft: `${level * 20 + 16}px` }}
                 >
@@ -73,7 +78,7 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="p-0 h-4 w-4 mr-2"
+                            className="mr-2 h-4 w-4 p-0"
                             onClick={() => toggleExpanded(account.id)}
                         >
                             {isExpanded ? (
@@ -89,14 +94,22 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
                     <div className="flex-1">
                         <div className="flex items-center justify-between">
                             <div>
-                                <span className="font-medium">{account.name}</span>
-                                <span className="text-sm text-gray-500 ml-2">({account.code})</span>
-                                <span className={`ml-2 text-xs px-2 py-1 rounded ${
-                                    account.type === 'nature'
-                                        ? 'bg-blue-100 text-blue-800'
-                                        : 'bg-green-100 text-green-800'
-                                }`}>
-                                    {account.type === 'nature' ? 'Nature d\'activité' : 'Centre de coût'}
+                                <span className="font-medium">
+                                    {account.name}
+                                </span>
+                                <span className="ml-2 text-sm text-gray-500">
+                                    ({account.code})
+                                </span>
+                                <span
+                                    className={`ml-2 rounded px-2 py-1 text-xs ${
+                                        account.type === 'nature'
+                                            ? 'bg-blue-100 text-blue-800'
+                                            : 'bg-green-100 text-green-800'
+                                    }`}
+                                >
+                                    {account.type === 'nature'
+                                        ? "Nature d'activité"
+                                        : 'Centre de coût'}
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2">
@@ -104,9 +117,11 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        onClick={() => addSubAccount(account.id)}
+                                        onClick={() =>
+                                            addSubAccount(account.id)
+                                        }
                                     >
-                                        <Plus className="h-4 w-4 mr-1" />
+                                        <Plus className="mr-1 h-4 w-4" />
                                         Sous-compte
                                     </Button>
                                 )}
@@ -131,7 +146,9 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
 
                 {isExpanded && hasChildren && (
                     <div>
-                        {account.children!.map((child) => renderTreeNode(child, level + 1))}
+                        {account.children!.map((child) =>
+                            renderTreeNode(child, level + 1),
+                        )}
                     </div>
                 )}
             </div>
@@ -140,15 +157,19 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">Comptes Analytiques</h3>
-                <Button onClick={() => setEditingAccount({
-                    id: 0,
-                    name: '',
-                    code: '',
-                    type: 'nature',
-                })}>
-                    <Plus className="h-4 w-4 mr-2" />
+                <Button
+                    onClick={() =>
+                        setEditingAccount({
+                            id: 0,
+                            name: '',
+                            code: '',
+                            type: 'nature',
+                        })
+                    }
+                >
+                    <Plus className="mr-2 h-4 w-4" />
                     Nouvelle Nature d'activité
                 </Button>
             </div>
@@ -164,8 +185,9 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
             {editingAccount && (
                 <Card>
                     <CardContent className="p-6">
-                        <h4 className="text-lg font-medium mb-4">
-                            {editingAccount.id ? 'Modifier' : 'Ajouter'} un compte analytique
+                        <h4 className="mb-4 text-lg font-medium">
+                            {editingAccount.id ? 'Modifier' : 'Ajouter'} un
+                            compte analytique
                         </h4>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -197,7 +219,7 @@ export default function FinanceAnalytique({ accounts = [] }: FinanceAnalytiquePr
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-end space-x-2 mt-4">
+                        <div className="mt-4 flex justify-end space-x-2">
                             <Button
                                 variant="outline"
                                 onClick={() => setEditingAccount(null)}

@@ -1,11 +1,31 @@
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 
 interface ProphylaxisPlan {
     id: number;
@@ -27,9 +47,13 @@ interface ZootechnieSanteProps {
 }
 
 export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
-    const [selectedPlan, setSelectedPlan] = useState<ProphylaxisPlan | null>(null);
+    const [selectedPlan, setSelectedPlan] = useState<ProphylaxisPlan | null>(
+        null,
+    );
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingStep, setEditingStep] = useState<ProphylaxisStep | null>(null);
+    const [editingStep, setEditingStep] = useState<ProphylaxisStep | null>(
+        null,
+    );
 
     const handlePlanClick = (plan: ProphylaxisPlan) => {
         setSelectedPlan(plan);
@@ -55,10 +79,10 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">Plans Prophylactiques</h3>
                 <Button>
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="mr-2 h-4 w-4" />
                     Nouveau Plan
                 </Button>
             </div>
@@ -80,7 +104,9 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                             className="cursor-pointer hover:bg-gray-50"
                             onClick={() => handlePlanClick(plan)}
                         >
-                            <TableCell className="font-medium">{plan.name}</TableCell>
+                            <TableCell className="font-medium">
+                                {plan.name}
+                            </TableCell>
                             <TableCell>{plan.description}</TableCell>
                             <TableCell>{plan.species}</TableCell>
                             <TableCell>{plan.steps.length}</TableCell>
@@ -111,10 +137,10 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                     </DialogHeader>
 
                     <div className="space-y-4">
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center justify-between">
                             <h4 className="text-md font-medium">Étapes</h4>
                             <Button onClick={addStep}>
-                                <Plus className="h-4 w-4 mr-2" />
+                                <Plus className="mr-2 h-4 w-4" />
                                 Ajouter une étape
                             </Button>
                         </div>
@@ -139,14 +165,18 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    onClick={() => editStep(step)}
+                                                    onClick={() =>
+                                                        editStep(step)
+                                                    }
                                                 >
                                                     <Edit className="h-4 w-4" />
                                                 </Button>
                                                 <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    onClick={() => deleteStep(step.id)}
+                                                    onClick={() =>
+                                                        deleteStep(step.id)
+                                                    }
                                                 >
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
@@ -158,13 +188,16 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                         </Table>
 
                         {editingStep && (
-                            <div className="border rounded-lg p-4 space-y-4">
+                            <div className="space-y-4 rounded-lg border p-4">
                                 <h5 className="font-medium">
-                                    {editingStep.id ? 'Modifier' : 'Ajouter'} une étape
+                                    {editingStep.id ? 'Modifier' : 'Ajouter'}{' '}
+                                    une étape
                                 </h5>
                                 <div className="grid grid-cols-3 gap-4">
                                     <div>
-                                        <Label htmlFor="day_age">Jour d'âge</Label>
+                                        <Label htmlFor="day_age">
+                                            Jour d'âge
+                                        </Label>
                                         <Input
                                             id="day_age"
                                             type="number"
@@ -172,7 +205,9 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                                             onChange={(e) =>
                                                 setEditingStep({
                                                     ...editingStep,
-                                                    day_age: parseInt(e.target.value),
+                                                    day_age: parseInt(
+                                                        e.target.value,
+                                                    ),
                                                 })
                                             }
                                         />
@@ -205,9 +240,15 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                                                 <SelectValue placeholder="Sélectionner une méthode" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="injection">Injection</SelectItem>
-                                                <SelectItem value="oral">Oral</SelectItem>
-                                                <SelectItem value="spray">Spray</SelectItem>
+                                                <SelectItem value="injection">
+                                                    Injection
+                                                </SelectItem>
+                                                <SelectItem value="oral">
+                                                    Oral
+                                                </SelectItem>
+                                                <SelectItem value="spray">
+                                                    Spray
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -219,7 +260,9 @@ export default function ZootechnieSante({ plans = [] }: ZootechnieSanteProps) {
                                     >
                                         Annuler
                                     </Button>
-                                    <Button onClick={saveStep}>Enregistrer</Button>
+                                    <Button onClick={saveStep}>
+                                        Enregistrer
+                                    </Button>
                                 </div>
                             </div>
                         )}
