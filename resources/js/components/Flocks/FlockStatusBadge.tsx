@@ -1,23 +1,48 @@
 import React from 'react';
-import type { FlockStatus } from '@/types';
+
+// Locally define FlockStatus to fix the missing export error from '@/types'
+export type FlockStatus =
+    | 'draft'
+    | 'pending'
+    | 'active'
+    | 'rejected'
+    | 'completed';
 
 interface Props {
-  status: FlockStatus;
+    status: FlockStatus;
 }
 
 const statusConfig: Record<FlockStatus, { color: string; label: string }> = {
-  draft: { color: 'bg-gray-100 text-gray-700', label: 'Brouillon' },
-  pending: { color: 'bg-yellow-100 text-yellow-700', label: 'En attente' },
-  active: { color: 'bg-green-100 text-green-700', label: 'Active' },
-  rejected: { color: 'bg-red-100 text-red-700', label: 'Rejetée' },
+    draft: {
+        color: 'bg-stone-100 text-stone-700 border border-stone-200',
+        label: 'Brouillon',
+    },
+    pending: {
+        color: 'bg-amber-50 text-amber-700 border border-amber-200',
+        label: 'En attente',
+    },
+    active: {
+        color: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+        label: 'Active',
+    },
+    completed: {
+        color: 'bg-blue-50 text-blue-700 border border-blue-200',
+        label: 'Terminée',
+    },
+    rejected: {
+        color: 'bg-red-50 text-red-700 border border-red-200',
+        label: 'Rejetée',
+    },
 };
 
 export default function FlockStatusBadge({ status }: Props) {
-  const config = statusConfig[status];
+    const config = statusConfig[status] || statusConfig.draft;
 
-  return (
-    <span className={`px-3 py-1 rounded-full text-sm ${config.color}`}>
-      {config.label}
-    </span>
-  );
+    return (
+        <span
+            className={`rounded-full px-3 py-1 text-xs font-medium ${config.color}`}
+        >
+            {config.label}
+        </span>
+    );
 }

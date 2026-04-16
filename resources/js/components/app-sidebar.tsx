@@ -23,9 +23,10 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Lots', 
-        href: generation(), 
-        icon: LayoutGrid},
+        title: 'Lots',
+        href: generation(),
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
