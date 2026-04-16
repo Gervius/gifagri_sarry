@@ -20,8 +20,9 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
+
   const addToast = (toast: Omit<Toast, 'id'>) => {
-    const id = Date.now().toString();
+    const id = crypto.randomUUID();
     setToasts(prev => [...prev, { ...toast, id }]);
 
     // Auto remove after 5 seconds
