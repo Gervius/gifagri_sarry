@@ -1,2 +1,2 @@
 #!/bin/bash
-sed -i 's/financial_analysis: any;/financial_analysis: any;/' resources/js/pages/Flocks/Show.tsx
+sed -i 's/setMedicineOrigin('\''farm'\'');/\/\/ eslint-disable-next-line react-hooks\/set-state-in-effect\n            setMedicineOrigin('\''farm'\'');/g' resources/js/components/Health/ExecuteTreatmentModal.tsx
