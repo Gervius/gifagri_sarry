@@ -2,7 +2,7 @@ import { usePage, router } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import {
   Eye, Edit2, Send, AlertCircle, ClipboardList, CheckCircle, XCircle,
-  MapPin, Calendar, Plus, ChevronLeft, ChevronRight, Trash2, MessageCircle
+  MapPin, Calendar, Trash2, MessageCircle
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import {
@@ -121,7 +121,7 @@ addToast({ message: String(flash.success), type: 'success' });
 addToast({ message: String(flash.error), type: 'error' });
 }
 
-  }, []);
+  }, [addToast, flash.success, flash.error]);
 
 // ── Handlers ────────────────────────────────
 

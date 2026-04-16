@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import { AlertCircle, ChevronLeft } from 'lucide-react';
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
-import { flocksEdit, flocksUpdate } from '@/routes';
+import { flocksUpdate } from '@/routes';
 
 interface Building {
     id: number;
@@ -31,7 +31,7 @@ export default function Edit({ flock, buildings }: PageProps) {
         notes: flock.notes || '',
     });
 
-    const [showConfirm, setShowConfirm] = useState(false);
+    const [, setShowConfirm] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
