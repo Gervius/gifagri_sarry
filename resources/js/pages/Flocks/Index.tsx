@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Head, router, usePage } from '@inertiajs/react';
 import {
     Plus,
@@ -32,6 +33,17 @@ import {
 } from '@/routes';
 
 // Types
+=======
+import { useState } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
+import { 
+  Plus, Search, Eye, CheckCircle, Edit2, Trash2, MapPin, Layers
+} from 'lucide-react';
+import { 
+  flocksCreate, flocksShow, flocksEdit, flocksSubmit, flocksDestroy 
+} from '@/routes';
+
+>>>>>>> f73b061 (modified:   app/Http/Controllers/DailyRecordController.php)
 type FlockStatus = 'draft' | 'pending' | 'active' | 'rejected' | 'completed';
 
 interface FlockPermissions {
@@ -66,6 +78,7 @@ interface PaginatedFlocks {
     links: { url: string | null; label: string; active: boolean }[];
 }
 
+<<<<<<< HEAD
 interface Building {
     id: number;
     name: string;
@@ -608,3 +621,181 @@ function FlockRow({
         </tr>
     );
 }
+=======
+interface PageProps {
+  flocks: PaginatedFlocks;
+  filters: { search?: string; status?: string; building_id?: string };
+  buildings: { data: { id: number; name: string }[] };
+}
+
+const statusConfig: Record<FlockStatus, { color: string; dot: string; label: string }> = {
+  draft: { color: 'bg-stone-100 text-stone-700', dot: 'bg-stone-400', label: 'Brouillon' },
+  pending: { color: 'bg-amber-50 text-amber-700 border-amber-200', dot: 'bg-amber-500', label: 'En attente' },
+  active: { color: 'bg-emerald-50 text-emerald-700 border-emerald-200', dot: 'bg-emerald-500', label: 'Active' },
+  rejected: { color: 'bg-red-50 text-red-700 border-red-200', dot: 'bg-red-500', label: 'Rejetée' },
+  completed: { color: 'bg-blue-50 text-blue-700 border-blue-200', dot: 'bg-blue-500', label: 'Terminée' },
+};
+
+export default function Index({ flocks, filters }: PageProps) {
+  const [searchTerm, setSearchTerm] = useState(filters.search || '');
+  const [statusFilter, setStatusFilter] = useState(filters.status || '');
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.get(window.location.pathname, { search: searchTerm, status: statusFilter }, { preserveState: true });
+  };
+
+  const handleAction = (url: string, method: 'post' | 'delete', confirmMessage?: string) => {
+    if (confirmMessage && !window.confirm(confirmMessage)) return;
+    router[method](url, {}, { preserveScroll: true });
+  };
+
+  return (
+    <>
+      <Head title="Gestion des Bandes" />
+
+      {/* En-tête de page optimisé UX */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-6">
+        <div>
+          <h1 className="text-3xl font-bold text-stone-900 tracking-tight flex items-center gap-3">
+            <Layers className="w-8 h-8 text-amber-500" />
+            Générations & Bandes
+          </h1>
+          <p className="text-base text-stone-500 mt-2">Gérez le cycle de vie de vos cheptels avec précision.</p>
+        </div>
+        <Link
+          href={flocksCreate.url()}
+          className="inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50 bg-amber-500 text-white hover:bg-amber-600 shadow-sm hover:shadow h-11 px-6 py-2"
+        >
+          <Plus className="w-5 h-5 mr-2" />
+          Nouvelle Bande
+        </Link>
+      </div>
+
+      {/* Conteneur principal avec paddings généreux */}
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden mb-8">
+        
+        {/* Barre d'outils et filtres */}
+        <div className="p-6 border-b border-stone-100 bg-stone-50/50">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-stone-400" />
+              <input
+                type="text"
+                placeholder="Rechercher une bande..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex h-12 w-full rounded-xl border border-stone-200 bg-white px-4 py-2 pl-12 text-sm text-stone-900 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 transition-shadow"
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="flex h-12 w-full sm:w-[240px] items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm text-stone-900 ring-offset-white focus:outline-none focus:ring-2 focus:ring-amber-500 transition-shadow cursor-pointer"
+            >
+              <option value="">Tous les statuts</option>
+              <option value="draft">Brouillons</option>
+              <option value="active">Actives</option>
+              <option value="completed">Terminées</option>
+            </select>
+            <button type="submit" className="hidden" />
+          </form>
+        </div>
+
+        {/* Table de données */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left whitespace-nowrap">
+            <thead className="text-xs text-stone-500 uppercase bg-white border-b border-stone-200">
+              <tr>
+                <th className="px-6 py-5 font-semibold tracking-wider">Identifiant & Bâtiment</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Effectif</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Date de réception</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Statut</th>
+                <th className="px-6 py-5 font-semibold tracking-wider text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {flocks.data.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <div className="flex flex-col items-center justify-center text-stone-400">
+                      <Layers className="w-12 h-12 mb-4 opacity-50" />
+                      <p className="text-base font-medium text-stone-600">Aucune bande trouvée</p>
+                      <p className="text-sm mt-1">Essayez de modifier vos filtres de recherche.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                flocks.data.map((flock) => (
+                  <tr key={flock.id} className="hover:bg-stone-50/80 transition-colors group">
+                    <td className="px-6 py-5">
+                      <div className="font-semibold text-stone-900 text-base">{flock.name}</div>
+                      <div className="flex items-center text-sm text-stone-500 mt-1.5">
+                        <MapPin className="w-3.5 h-3.5 mr-1.5 text-stone-400" />
+                        {flock.building}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <div className="font-semibold text-stone-900 text-base">{flock.current_quantity.toLocaleString()}</div>
+                      <div className="text-sm text-stone-500 mt-1.5">sur {flock.initial_quantity.toLocaleString()}</div>
+                    </td>
+                    <td className="px-6 py-5 text-stone-600 font-medium">
+                      {flock.arrival_date_formatted}
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusConfig[flock.status].color}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full mr-2 ${statusConfig[flock.status].dot}`}></span>
+                        {statusConfig[flock.status].label}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {flock.can_view && (
+                          <Link
+                            href={flocksShow.url(flock.id)}
+                            className="p-2 text-stone-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all"
+                            title="Voir les détails"
+                          >
+                            <Eye className="w-5 h-5" />
+                          </Link>
+                        )}
+                        {flock.can_edit && (
+                          <Link
+                            href={flocksEdit.url(flock.id)}
+                            className="p-2 text-stone-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                            title="Modifier"
+                          >
+                            <Edit2 className="w-5 h-5" />
+                          </Link>
+                        )}
+                        {flock.can_submit && (
+                          <button
+                            onClick={() => handleAction(flocksSubmit.url(flock.id), 'post', 'Soumettre cette bande pour approbation ?')}
+                            className="p-2 text-stone-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
+                            title="Soumettre"
+                          >
+                            <CheckCircle className="w-5 h-5" />
+                          </button>
+                        )}
+                        {flock.can_delete && (
+                          <button
+                            onClick={() => handleAction(flocksDestroy.url(flock.id), 'delete', 'Êtes-vous sûr de vouloir supprimer cette bande ?')}
+                            className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Supprimer"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
+}
+>>>>>>> f73b061 (modified:   app/Http/Controllers/DailyRecordController.php)

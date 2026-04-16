@@ -70,4 +70,9 @@ class Partner extends Model
     {
         return $this->hasMany(Delivery::class);
     }
+
+    public function scopeSuppliers($query)
+    {
+        return $query->whereIn('type', ['supplier', 'both']);
+    }
 }

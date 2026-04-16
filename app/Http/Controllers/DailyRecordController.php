@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use App\Actions\SubmitDailyRecordAction;
 
 use App\Http\Requests\ApproveDailyRecordRequest;
